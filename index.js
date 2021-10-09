@@ -26,7 +26,6 @@ const addEmployee = () => {
             writeFile(createHtml(teamMembers));
             copyFile();
         }
-        console.log(teamMembers);
     })
 };
 

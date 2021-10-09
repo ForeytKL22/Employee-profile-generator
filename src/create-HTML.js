@@ -38,7 +38,7 @@ const generateEngineer = (answers) => {
     <ul class="list-group list-group-flush">
       <li class="list-group-item">ID: ${answers.id}</li>
       <li class="list-group-item"><a href="mailto:${answers.email}" target="_blank">Email</a></li>
-      <li class="list-group-item"><a href="https://www.github.com/${answers.github}">Github</a></li>
+      <li class="list-group-item"><a href="https://www.github.com/${answers.github}" target="_blank">Github</a></li>
     </ul>
         </div>
     </div>
