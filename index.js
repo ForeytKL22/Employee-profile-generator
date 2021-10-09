@@ -86,20 +86,22 @@ const promptManager = () => {
                 }
             },
         ])
+            
             .then (answers => {
             const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumbe);
             teamMembers.push(manager);
             createTeam();
         })
 };
-promptManager();
+
+promptManager()
+
+
 
 
 // create function createTeam() that prompts question if they are engineer or intern
 const createTeam = () => {
-
-    console.log("please enter you first team  member");
-
+    console.log('PLEASE ENTER YOU FIRST TEAM MEMBER');
     inquirer.prompt([
         {
             type: 'list',
@@ -115,6 +117,7 @@ const createTeam = () => {
             getIntern();
         };
     })
+    .then
 };
 
 
@@ -239,7 +242,7 @@ const getIntern = () => {
             }  
         }
     ])
-}
+};
 
 
 
