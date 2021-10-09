@@ -8,7 +8,7 @@ const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 const { ESRCH } = require('constants');
 
-const teamMembers = [];
+const teamMembers = {manager: [], engineer: [], intern: []};
 
 
 const addEmployee = () => {
@@ -17,18 +17,18 @@ const addEmployee = () => {
             type: 'confirm',
             name: 'addMore',
             message: 'Do you want to add any more team members?'
-            // validate: addMore => {
-            //     if(addMore === true) {
-            //         return promptQuestions()
-            //     } else {
-            //         return false;
-            //     }
         }
     ])
+    .then( ({ addMore }) => {
+        if (addMore) {
+            createTeam();
+        } else {
+            writeFile(createHtml(teamMembers));
+            copyFile();
+        }
+        console.log(teamMembers);
+    })
 };
-
-
-
 
 
 const promptManager = () => {
@@ -85,11 +85,10 @@ const promptManager = () => {
                     }
                 }
             },
-        ])
-            
+        ])       
             .then (answers => {
-            const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumbe);
-            teamMembers.push(manager);
+            const manager = new Manager(answers.managerName, answers.managerId, answers.managerEmail, answers.managerOfficeNumber);
+            teamMembers.manager.push(manager);
             createTeam();
         })
 };
@@ -97,11 +96,9 @@ const promptManager = () => {
 promptManager()
 
 
-
-
 // create function createTeam() that prompts question if they are engineer or intern
 const createTeam = () => {
-    console.log('PLEASE ENTER YOU FIRST TEAM MEMBER');
+    console.log('PLEASE ENTER A TEAM MEMBER');
     inquirer.prompt([
         {
             type: 'list',
@@ -117,7 +114,6 @@ const createTeam = () => {
             getIntern();
         };
     })
-    .then
 };
 
 
@@ -137,7 +133,6 @@ const getEngineer = () => {
                 }
             }
         },
-
         {
             type: 'input',
             name: 'id',
@@ -151,7 +146,6 @@ const getEngineer = () => {
                 }
             }
         },
-
         {
             type: 'input',
             name: 'email',
@@ -165,7 +159,6 @@ const getEngineer = () => {
                 }
             }  
         },
-
         {
             type: 'input',
             name: 'github',
@@ -179,9 +172,13 @@ const getEngineer = () => {
                 }
             }  
         }
-    ])
+    ]) 
+    .then(answers => {
+        const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        teamMembers.engineer.push(engineer);
+        addEmployee()
+    })
 };
-
 
 
 const getIntern = () => {
@@ -199,7 +196,6 @@ const getIntern = () => {
                 }
             }
         },
-
         {
             type: 'input',
             name: 'id',
@@ -213,7 +209,6 @@ const getIntern = () => {
                 }
             }
         },
-
         {
             type: 'input',
             name: 'email',
@@ -227,10 +222,9 @@ const getIntern = () => {
                 }
             }  
         },
-
         {
             type: 'input',
-            name: 'github',
+            name: 'school',
             message: "What school does the intern attend?" ,
             validate: schoolInput => {
                 if(schoolInput) {
@@ -242,50 +236,12 @@ const getIntern = () => {
             }  
         }
     ])
+    .then(answers => {
+        const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+        teamMembers.intern.push(intern);
+        addEmployee()
+    })
 };
-
-
-
-
-
-
-// promptManager()
-// .then(data => {
-//     console.log("please add your first team member");
-//     promptQuestions(data)
-//     .then( data => {
-//         console.log(data)
-//         if (data.role === 'Engineer') {
-//             inquirer.prompt([
-//                 {
-//                 type: 'input',
-//                 name: 'github',
-//                 message: "What is the engineer's github username?"
-//                 }
-//             ])
-            
-//             const engineer = new Engineer(data.name, data.id, data.email, data.github);
-//             teamMembers.push(engineer);
-//             console.log(teamMembers);
-
-//         } else if (data.role === 'Intern') {
-//             inquirer.prompt([
-//                 {
-//                     type: 'input',
-//                     name: 'school',
-//                     message: 'What school does this intern attend?'
-//                 }   
-//             ])
-//             const intern = new Intern(data.name, data.id, data.email, data.school);
-//             teamMembers.push(intern);
-//             console.log(teamMembers);
-//         } 
-//     })
-// })
-
-
-
-
 
 
 
